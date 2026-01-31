@@ -1,0 +1,7 @@
+curl --location --request PUT 'http://localhost:4000/customer/auth/review/1' \
+--header 'Content-Type: application/json' \
+--header 'Cookie: connect.sid=s%3AyeG0mvptnDWEV9AYNLhjvoOoFu8-dEe6.l6tn2oiYT2x7N5vj0m5Qtkvojz3gY7%2BH%2FGxA9zvxZKw' \
+--data '{
+    "review": "this is a new review test"
+}'
+{"message":"Review saved successfully","isbn":"1","title":"Things Fall Apart","reviewer":"andres","review":"this is a new review test"}%    
