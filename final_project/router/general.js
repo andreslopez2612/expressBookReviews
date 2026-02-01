@@ -78,13 +78,22 @@ public_users.get('/author/:author', function (req, res) {
 public_users.get('/title/:title', function (req, res) {
   //Write your code here
   const title = req.params.title;
-  const decodedTitle = decodeURIComponent(title);
-  const booksByTitle = Object.values(books).filter(book => book.title === decodedTitle);
-  if (booksByTitle.length > 0) {
-    return res.status(200).json(booksByTitle);
-  } else {
-    return res.status(404).json({ message: "Books with this title not found" });
-  }
+
+  const booksByTitlePromise = new Promise((resolve, reject) => {
+    const decodedTitle = decodeURIComponent(title);
+    const booksByTitle = Object.values(books).filter(book => book.title === decodedTitle);
+    if (booksByTitle.length > 0) {
+      resolve(booksByTitle);
+    } else {
+      reject("Books with this title not found");
+    }
+  });
+
+  booksByTitlePromise.then((books) => {
+    return res.status(200).json(books);
+  }).catch((err) => {
+    return res.status(404).json({ message: err });
+  });
 });
 
 //  Get book review
