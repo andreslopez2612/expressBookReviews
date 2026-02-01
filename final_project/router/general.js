@@ -56,13 +56,22 @@ public_users.get('/isbn/:isbn', function (req, res) {
 public_users.get('/author/:author', function (req, res) {
   //Write your code here
   const author = req.params.author;
-  const decodedAuthor = decodeURIComponent(author);
-  const booksByAuthor = Object.values(books).filter(book => book.author === decodedAuthor);
-  if (booksByAuthor.length > 0) {
-    return res.status(200).json(booksByAuthor);
-  } else {
-    return res.status(404).json({ message: "Books by this author not found" });
-  }
+
+  const booksByAuthor = new Promise((resolve, reject) => {
+    const decodedAuthor = decodeURIComponent(author);
+    const filteredBooks = Object.values(books).filter(book => book.author === decodedAuthor);
+    if (filteredBooks.length > 0) {
+      resolve(filteredBooks);
+    } else {
+      reject("Books by this author not found");
+    }
+  });
+
+  booksByAuthor.then((books) => {
+    return res.status(200).json(books);
+  }).catch((err) => {
+    return res.status(404).json({ message: err });
+  });
 });
 
 // Get all books based on title
