@@ -21,10 +21,9 @@ public_users.post("/register", (req, res) => {
 
 // Get the book list available in the shop
 public_users.get('/', function (req, res) {
-
-  //Write your code here
   const bookList = new Promise((resolve, reject) => {
     resolve(books);
+    reject("Unable to fetch book list");
   });
 
   bookList.then((bookList) => {
